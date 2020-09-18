@@ -29,43 +29,56 @@ public class Main {
 
     public static void check(String host, String storeType, String user,
                              String password) {
+        boolean empty = true;
         try {
+            while (empty) {
+                //create properties field
+                Properties properties = new Properties();
 
-            //create properties field
-            Properties properties = new Properties();
+                properties.put("mail.pop3.host", host);
+                properties.put("mail.pop3.port", "995");
+                //properties.put("mail.pop3.auth", "true");
+                properties.put("mail.pop3.starttls.enable", "true");
+                Session emailSession = Session.getDefaultInstance(properties);
 
-            properties.put("mail.pop3.host", host);
-            properties.put("mail.pop3.port", "995");
-            properties.put("mail.pop3.auth", "true");
-            properties.put("mail.pop3.starttls.enable", "true");
-            Session emailSession = Session.getDefaultInstance(properties);
+                //create the POP3 store object and connect with the pop server
+                Store store = emailSession.getStore("pop3s");
 
-            //create the POP3 store object and connect with the pop server
-            Store store = emailSession.getStore("pop3s");
+                store.connect(host, user, password);
 
-            store.connect(host, user, password);
+                //create the folder object and open it
+                Folder emailFolder = store.getFolder("INBOX");
+                emailFolder.open(Folder.READ_ONLY);
 
-            //create the folder object and open it
-            Folder emailFolder = store.getFolder("INBOX");
-            emailFolder.open(Folder.READ_ONLY);
+                // retrieve the messages from the folder in an array and print it
+                Message[] messages = emailFolder.getMessages();
+                System.out.println("messages.length---" + messages.length);
+                if (messages.length >= 1) empty = false;
 
-            // retrieve the messages from the folder in an array and print it
-            Message[] messages = emailFolder.getMessages();
-            System.out.println("messages.length---" + messages.length);
+                UserInfo x1;
 
-            for (int i = 0, n = messages.length; i < n; i++) {
-                Message message = messages[i];
-                System.out.println("---------------------------------");
-                System.out.println("Email Number " + (i + 1));
-                System.out.println("Subject: " + message.getSubject());
-                System.out.println("From: " + message.getFrom()[0]);
-                System.out.println("Text: " + message.getContent());
-                String line = getMessageContent(message);
-                System.out.println(line);
+                for (int i = 0, n = messages.length; i < n; i++) {
+                    Message message = messages[i];
+                    System.out.println("---------------------------------");
+                    System.out.println("Email Number " + (i + 1));
+                    // System.out.println("Subject: " + message.getSubject());
+                    System.out.println("From: " + message.getFrom()[0]);
+                    //  System.out.println("Text: " + message.getContent());
+                    String line = getMessageContent(message);
+                  //  System.out.println(line);
+                    String[] userData = line.split(",");
+                  //  System.out.println(userData.length);
+                    if (userData.length == 5) {//five subjects required
+                       // for (String a : userData)
+                         //   System.out.println(a);
+                        x1 = new UserInfo(userData[0],userData[1],userData[2],userData[3],userData[4]);
+                        x1.print();
+                    }
+                }
+                emailFolder.close(false);
+                store.close();
+                Thread.sleep(5000);
             }
-
-            emailFolder.close(false);
-            store.close();
 
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
@@ -97,5 +110,6 @@ public class Main {
         }
         return "";
     }
-    }
+}
+
 
