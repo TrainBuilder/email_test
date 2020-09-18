@@ -15,20 +15,16 @@ import javax.mail.Part;
 
 
 public class Main {
-
+                /////Email credentials
     public static void main(String[] args) {
-        String host = "pop.gmail.com";// change accordingly
+        String host = "pop.gmail.com";
         String mailStoreType = "pop3";
-        String username = "teammoxieRus@gmail.com";// change accordingly
-        String password = "mox1e4u5";// change accordingly
-
+        String username = "teammoxieRus@gmail.com";
+        String password = "mox1e4u5";
         check(host, mailStoreType, username, password);
-
     }
-
-
-    public static void check(String host, String storeType, String user,
-                             String password) {
+    //methode to connect to email server, read and store emails
+    public static void check(String host, String storeType, String user, String password) {
         boolean empty = true;
         try {
             while (empty) {
@@ -37,7 +33,6 @@ public class Main {
 
                 properties.put("mail.pop3.host", host);
                 properties.put("mail.pop3.port", "995");
-                //properties.put("mail.pop3.auth", "true");
                 properties.put("mail.pop3.starttls.enable", "true");
                 Session emailSession = Session.getDefaultInstance(properties);
 
@@ -50,34 +45,28 @@ public class Main {
                 Folder emailFolder = store.getFolder("INBOX");
                 emailFolder.open(Folder.READ_ONLY);
 
-                // retrieve the messages from the folder in an array and print it
+                // retrieve the messages from the folder in an array
                 Message[] messages = emailFolder.getMessages();
-                System.out.println("messages.length---" + messages.length);
-                if (messages.length >= 1) empty = false;
+                System.out.println("messages in INBOX: " + messages.length);
 
-                UserInfo x1;
 
-                for (int i = 0, n = messages.length; i < n; i++) {
+                if (messages.length >= 1) empty = false;//new email in inbox; stop loop
+                UserInfo x1;//user object
+                for (int i = 0, n = messages.length; i < n; i++) {//for each message in the inbox
                     Message message = messages[i];
                     System.out.println("---------------------------------");
                     System.out.println("Email Number " + (i + 1));
-                    // System.out.println("Subject: " + message.getSubject());
                     System.out.println("From: " + message.getFrom()[0]);
-                    //  System.out.println("Text: " + message.getContent());
-                    String line = getMessageContent(message);
-                  //  System.out.println(line);
-                    String[] userData = line.split(",");
-                  //  System.out.println(userData.length);
+                    String line = getMessageContent(message);//read contents of email, return as string
+                    String[] userData = line.split(",");//separate sting by commas
                     if (userData.length == 5) {//five subjects required
-                       // for (String a : userData)
-                         //   System.out.println(a);
-                        x1 = new UserInfo(userData[0],userData[1],userData[2],userData[3],userData[4]);
+                        x1 = new UserInfo(userData[0],userData[1],userData[2],userData[3],userData[4]);//create new user with information from email
                         x1.print();
                     }
                 }
                 emailFolder.close(false);
                 store.close();
-                Thread.sleep(5000);
+                Thread.sleep(5000);//check email every 5 seconds for new
             }
 
         } catch (NoSuchProviderException e) {
@@ -89,6 +78,7 @@ public class Main {
         }
     }
 
+    //methode to convert email contents to string
     public static String getMessageContent(Message message) throws MessagingException {
         try {
             Object content = message.getContent();

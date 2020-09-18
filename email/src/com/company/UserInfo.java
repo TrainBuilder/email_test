@@ -19,8 +19,6 @@ public class UserInfo {
             System.out.printf("\nUser address: %s",Address);
             System.out.printf("\nProduct ordered: %s",product);
             System.out.printf("\nQuantity ordered: %s",quantity);
-
-            //System.out.println(email);
         }
 
 }
