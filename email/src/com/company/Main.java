@@ -1,5 +1,5 @@
 package com.company;
-
+//test
 
 import java.util.Properties;
 import javax.mail.Folder;
