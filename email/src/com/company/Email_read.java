@@ -4,6 +4,7 @@ import javax.mail.*;
 import java.io.IOException;
 import java.util.Properties;
 
+
 public class Email_read {
 
     static UserInfo check() {
@@ -11,6 +12,7 @@ public class Email_read {
         String storeType = "pop3";
         String user = "teammoxieRus@gmail.com";
         String password = "mox1e4u5";
+        //00/00/0000, email@email.com, 123 drive,2ft57ys7CM97,10
 
         boolean empty = true;
         UserInfo x1 = new UserInfo();;//user object
@@ -54,6 +56,7 @@ public class Email_read {
                         x1.setProduct(userData[3]);
                         x1.setQuantity(userData[4]);//create new user with information from email
                        // x1.print();
+                        //00/00/0000, email@email.com, 123 drive,2ft57ys7CM97,10
                     }
                 }
                 emailFolder.close(false);
