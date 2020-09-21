@@ -17,12 +17,13 @@ public class Email_read {
         boolean empty = true;
         UserInfo x1 = new UserInfo();;//user object
         try {
-            while (empty) {
+           // while (empty) {
                 //create properties field
                 Properties properties = new Properties();
 
                 properties.put("mail.pop3.host", host);
                 properties.put("mail.pop3.port", "995");
+                properties.put("mail.pop3.auth", "true");
                 properties.put("mail.pop3.starttls.enable", "true");
                 Session emailSession = Session.getDefaultInstance(properties);
 
@@ -59,10 +60,12 @@ public class Email_read {
                         //00/00/0000, email@email.com, 123 drive,2ft57ys7CM97,10
                     }
                 }
+                properties.put("mail.pop3.starttls.enable", "false");
+                Session.getDefaultInstance(properties);
                 emailFolder.close(false);
                 store.close();
-                Thread.sleep(5000);//check email every 5 seconds for new
-            }
+                //Thread.sleep(5000);//check email every 5 seconds for new
+           // }
 
         } catch (NoSuchProviderException e) {
             e.printStackTrace();

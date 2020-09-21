@@ -1,5 +1,7 @@
 package com.company;
 
+import javax.mail.MessagingException;
+
 public class UserInfo {
         String date;
         String email;
@@ -29,7 +31,18 @@ public class UserInfo {
             System.out.printf("\nUser email: %s",email);
             System.out.printf("\nUser address: %s",Address);
             System.out.printf("\nProduct ordered: %s",product);
-            System.out.printf("\nQuantity ordered: %s",quantity);
+            System.out.printf("\nQuantity ordered: %s\n",quantity);
+        }
+
+        void EmailReply(){
+            String cx = "Hi, "+email+"! Thank you for your order of "+quantity+" of "+product +"\nYour order will be shipped to: "+ Address ;
+            Email_send.SMTP_setup();
+            try {
+                Email_send.createEmail(email, "Event driven reply test2", cx);
+                Email_send.sendEmail();
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
         }
 
 }
