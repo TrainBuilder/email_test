@@ -17,7 +17,7 @@ public class Email_read {
         boolean empty = true;
         UserInfo x1 = new UserInfo();;//user object
         try {
-           // while (empty) {
+           while (empty) {
                 //create properties field
                 Properties properties = new Properties();
 
@@ -64,8 +64,8 @@ public class Email_read {
                 Session.getDefaultInstance(properties);
                 emailFolder.close(false);
                 store.close();
-                //Thread.sleep(5000);//check email every 5 seconds for new
-           // }
+                Thread.sleep(5000);//check email every 5 seconds for new
+           }
 
         } catch (NoSuchProviderException e) {
             e.printStackTrace();

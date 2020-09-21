@@ -34,6 +34,8 @@ public class UserInfo {
             System.out.printf("\nQuantity ordered: %s\n",quantity);
         }
 
+        //auto reply methode
+
         void EmailReply(){
             String cx = "Hi, "+email+"! Thank you for your order of "+quantity+" of "+product +"\nYour order will be shipped to: "+ Address ;
             Email_send.SMTP_setup();
